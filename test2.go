@@ -13,4 +13,44 @@ func main()  {
 	var age int =23
 
 	fmt.Println("my age is :" ,age)
+	const (
+		a = iota
+		b
+		c
+		d = "ha"
+		e
+		f = 100
+		g
+		h = iota
+		i
+	)
+	fmt.Println(a,b,c,d,e,f,g,h,i)
+	const (
+		a1 = "aa"
+		b2 = "bb"
+		c2
+	)
+	fmt.Println(a1,b2,c2)
+
+	const (
+		i1 = 1 << iota
+		j1 = 3 << iota
+		k
+		l
+	)
+	fmt.Println(i1,j1,k,l)
+	var a2 bool = false
+	var b1 bool = true
+
+	if a2 && b1{
+		fmt.Println("第一行条件为true")
+	}
+	if a2 || b1 {
+		fmt.Println("第二行条件为true")
+	}
+	a2 = true
+	b1 = true
+	if a2 && b1{
+		fmt.Println("第三行条件为true")
+	}
 }
