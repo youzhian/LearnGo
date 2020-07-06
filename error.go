@@ -11,6 +11,14 @@ type DivideError struct {
 	divider int
 }
 
+/*
+	定义一个书结构体
+*/
+type BookError struct {
+	name   string
+	author string
+}
+
 /*错误信息处理*/
 func main() {
 
@@ -22,6 +30,9 @@ func main() {
 	if _, errorMsg := Divide(100, 0); errorMsg != "" {
 		fmt.Println("errorMsg is: ", errorMsg)
 	}
+	book := BookError{name: "三体", author: "刘慈欣"}
+	var msg = book.Error()
+	fmt.Println(msg)
 }
 
 func Sqrt(f float64) (float64, error) {
@@ -32,6 +43,7 @@ func Sqrt(f float64) (float64, error) {
 	return f, nil
 }
 
+/*实现 error接口*/
 func (de *DivideError) Error() string {
 	strFormat := `
     Cannot proceed, the divider is zero.
@@ -39,6 +51,11 @@ func (de *DivideError) Error() string {
     divider: 0
 `
 	return fmt.Sprintf(strFormat, de.dividee)
+}
+
+/*实现 error接口*/
+func (book *BookError) Error() string {
+	return "《" + book.name + "》|" + book.author
 }
 
 // 定义 `int` 类型除法运算的函数
