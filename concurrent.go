@@ -75,10 +75,12 @@ func producter(s string, channel chan<- string, isclose *bool) {
 channelName <- chan type 为只读通道
 */
 func customer(channel <-chan string) {
+
 	//无限循环
 	for {
 		// 从通道中取出数据, 此处会阻塞直到信道中返回数据
 		message := <-channel
+		strings.Trim(message, message)
 		//message=strings.Trim(message)
 		fmt.Println(message)
 		//若通道关闭，则跳出循环
