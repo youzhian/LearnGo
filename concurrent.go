@@ -62,7 +62,7 @@ func producter(s string, channel chan<- string, isclose *bool) {
 			break
 		}
 		//将随机数和字符串格式化为字符串发送给通道
-		channel <- fmt.Sprintf("%s:%v", s, rand.Int31())
+		channel <- fmt.Sprintf("%s[%d]:%v", s, i, rand.Int31())
 		i += 1
 		//休眠一秒
 		time.Sleep(time.Second)
@@ -75,7 +75,6 @@ func producter(s string, channel chan<- string, isclose *bool) {
 channelName <- chan type 为只读通道
 */
 func customer(channel <-chan string) {
-
 	//无限循环
 	for {
 		// 从通道中取出数据, 此处会阻塞直到信道中返回数据
