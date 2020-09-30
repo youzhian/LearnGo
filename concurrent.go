@@ -26,12 +26,13 @@ func main() {
 	say("我是主线程")
 
 	channel := make(chan string)
-	var isclose bool = false
+	isclose := false
 	go producter("cat", channel, &isclose)
 	go producter("dog", channel, &isclose)
 
 	customer(channel)
 
+	fmt.Printf("主协程退出")
 }
 
 func say(s string) {
@@ -51,9 +52,10 @@ func producter(s string, channel chan<- string, isclose *bool) {
 	for {
 		//若已关闭
 		if *isclose {
-			fmt.Println(s, " the channel is close")
+			fmt.Println("the channel is close cannot write channel ", s)
 			break
 		}
+
 		if i >= max {
 			channel <- s + ": channel closed"
 			//关闭通道
@@ -61,6 +63,7 @@ func producter(s string, channel chan<- string, isclose *bool) {
 			*isclose = true
 			break
 		}
+
 		//将随机数和字符串格式化为字符串发送给通道
 		channel <- fmt.Sprintf("%s[%d]:%v", s, i, rand.Int31())
 		i += 1
@@ -77,14 +80,16 @@ channelName <- chan type 为只读通道
 func customer(channel <-chan string) {
 	//无限循环
 	for {
-		// 从通道中取出数据, 此处会阻塞直到信道中返回数据
-		message := <-channel
-		strings.Trim(message, message)
-		//message=strings.Trim(message)
-		fmt.Println(message)
-		//若通道关闭，则跳出循环
-		if strings.HasSuffix(message, "channel closed") {
+		// 从通道中取出数据, 此处会阻塞直到信道中返回数据，ok返回false表示通道已关闭
+		message, ok := <-channel
+		if !ok {
+			if message != "" {
+				fmt.Println(message)
+			}
+			fmt.Println("通道已关闭")
 			break
 		}
+		strings.Trim(message, message)
+		fmt.Println(message)
 	}
 }
